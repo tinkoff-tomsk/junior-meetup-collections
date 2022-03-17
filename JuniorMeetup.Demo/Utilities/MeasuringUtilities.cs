@@ -1,28 +1,42 @@
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace JuniorMeetup.Demo.Utilities;
 
-public static class MeasuringUtilities
+static class MeasuringUtilities
 {
-	public static void MeasureTime(Action action)
+	public static void MeasureTime(Action action, [CallerArgumentExpression("action")] string? expression = null)
+	{
+		MeasureTime(
+			() =>
+			{
+				action();
+				return true;
+			},
+			expression);
+	}
+
+	public static T MeasureTime<T>(Func<T> func, [CallerArgumentExpression("func")] string? expression = null)
 	{
 		var stopwatch = Stopwatch.StartNew();
 
-		action();
+		T result = func();
 
 		stopwatch.Stop();
-		Console.WriteLine($"Elapsed time: {stopwatch.Elapsed}");
+		Console.WriteLine($"{expression}:\t{stopwatch.Elapsed}");
+
+		return result;
 	}
 
-	public static void MeasureMemory(Action action)
+	public static void MeasureMemory(Action action, [CallerArgumentExpression("action")] string? expression = null)
 	{
 		long workingSetBefore = GetWorkingSetInMegabytes();
-		Console.WriteLine($"Memory consumption before: {workingSetBefore} MB");
+		Console.WriteLine($"{expression}. Memory consumption before: {workingSetBefore} MB");
 
 		action();
 
 		long workingSetAfter = GetWorkingSetInMegabytes();
-		Console.WriteLine($"Memory consumption after: {workingSetAfter} MB");
+		Console.WriteLine($"{expression}. Memory consumption after:  {workingSetAfter} MB");
 	}
 
 	private static long GetWorkingSetInMegabytes()
