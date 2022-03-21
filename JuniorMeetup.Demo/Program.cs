@@ -25,3 +25,13 @@ var linkedList = MeasuringUtilities.MeasureTime(Lists.Append.ToLinkedList);
 // Console.WriteLine("Lists.RemoveFirst:");
 // MeasuringUtilities.MeasureTime(() => Lists.RemoveFirst.FromArrayList(arrayList));
 // MeasuringUtilities.MeasureTime(() => Lists.RemoveFirst.FromLinkedList(linkedList));
+
+// Console.WriteLine();
+// Console.WriteLine("Sets.Add:");
+// var arrayList = MeasuringUtilities.MeasureTime(Sets.Add.ToArrayList);
+// var hashSet   = MeasuringUtilities.MeasureTime(Sets.Add.ToHashSet);
+
+// Console.WriteLine();
+// Console.WriteLine("Sets.Contains:");
+// MeasuringUtilities.MeasureTime(() => Sets.Contains.InArrayList(arrayList));
+// MeasuringUtilities.MeasureTime(() => Sets.Contains.InHashSet(hashSet));
