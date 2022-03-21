@@ -4,7 +4,7 @@ static class Lists
 {
 	public static class Append
 	{
-		const int N = 10_000_000;
+		private const int N = 10_000_000;
 
 		public static List<int> ToArrayList()
 		{

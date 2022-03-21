@@ -7,6 +7,11 @@ var  arrayList = MeasuringUtilities.MeasureTime(Lists.Append.ToArrayList);
 var linkedList = MeasuringUtilities.MeasureTime(Lists.Append.ToLinkedList);
 
 // Console.WriteLine();
+// Console.WriteLine("Lists.Append:");
+// MeasuringUtilities.MeasureMemory(() => Lists.Append.ToArrayList());
+// MeasuringUtilities.MeasureMemory(() => Lists.Append.ToLinkedList());
+
+// Console.WriteLine();
 // Console.WriteLine("Lists.RemoveLast:");
 // MeasuringUtilities.MeasureTime(() => Lists.RemoveLast.FromArrayList(arrayList));
 // MeasuringUtilities.MeasureTime(() => Lists.RemoveLast.FromLinkedList(linkedList));

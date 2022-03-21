@@ -37,6 +37,8 @@ static class MeasuringUtilities
 
 		long workingSetAfter = GetWorkingSetInMegabytes();
 		Console.WriteLine($"{expression}. Memory consumption after:  {workingSetAfter} MB");
+
+		GC.Collect();
 	}
 
 	private static long GetWorkingSetInMegabytes()
