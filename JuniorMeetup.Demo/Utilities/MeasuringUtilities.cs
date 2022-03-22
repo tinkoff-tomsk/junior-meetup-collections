@@ -23,7 +23,7 @@ static class MeasuringUtilities
 		T result = func();
 
 		stopwatch.Stop();
-		Console.WriteLine($"{expression,-70}{stopwatch.Elapsed}");
+		Console.WriteLine($"{expression,-75}{stopwatch.Elapsed}");
 
 		return result;
 	}

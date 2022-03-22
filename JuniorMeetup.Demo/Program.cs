@@ -35,3 +35,13 @@ var linkedList = MeasuringUtilities.MeasureTime(Lists.Append.ToLinkedList);
 // Console.WriteLine("Sets.Contains:");
 // MeasuringUtilities.MeasureTime(() => Sets.Contains.InArrayList(arrayList));
 // MeasuringUtilities.MeasureTime(() => Sets.Contains.InHashSet(hashSet));
+
+// Console.WriteLine();
+// Console.WriteLine("Sets.Hashing.Add");
+// var   poorlyHashedObjects = MeasuringUtilities.MeasureTime(Sets.Hashing.AddPoorlyHashedObjects);
+// var properlyHashedObjects = MeasuringUtilities.MeasureTime(Sets.Hashing.AddProperlyHashedObjects);
+
+// Console.WriteLine();
+// Console.WriteLine("Sets.Hashing.Search");
+// MeasuringUtilities.MeasureTime(() => Sets.Hashing.SearchPoorlyHashedObjects(poorlyHashedObjects));
+// MeasuringUtilities.MeasureTime(() => Sets.Hashing.SearchProperlyHashedObjects(properlyHashedObjects));
