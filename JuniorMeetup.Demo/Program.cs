@@ -45,3 +45,35 @@ var linkedList = MeasuringUtilities.MeasureTime(Lists.Append.ToLinkedList);
 // Console.WriteLine("Sets.Hashing.Search");
 // MeasuringUtilities.MeasureTime(() => Sets.Hashing.SearchPoorlyHashedObjects(poorlyHashedObjects));
 // MeasuringUtilities.MeasureTime(() => Sets.Hashing.SearchProperlyHashedObjects(properlyHashedObjects));
+
+// Console.WriteLine();
+// Console.WriteLine("Sorted.Add:");
+// var   hashSet = MeasuringUtilities.MeasureTime(Sorted.Add.ToHashSet);
+// var sortedSet = MeasuringUtilities.MeasureTime(Sorted.Add.ToSortedSet);
+
+// Console.WriteLine();
+// Console.WriteLine("Sorted.Contains:");
+// MeasuringUtilities.MeasureTime(() => Sorted.Contains.InHashSet(hashSet));
+// MeasuringUtilities.MeasureTime(() => Sorted.Contains.InSortedSet(sortedSet));
+
+// Console.WriteLine();
+// Console.WriteLine("Lists.Append:");
+// MeasuringUtilities.MeasureMemory(() => Sorted.Add.ToHashSet());
+// MeasuringUtilities.MeasureMemory(() => Sorted.Add.ToSortedSet());
+
+// var randomNumbers = Sorted.SetVsArray.GetRandomNumbers();
+
+// Console.WriteLine();
+// Console.WriteLine("Sorted.SetVsArray.Create:");
+// var sortedArray = MeasuringUtilities.MeasureTime(() => Sorted.SetVsArray.CreateSortedArray(randomNumbers));
+// var sortedSet   = MeasuringUtilities.MeasureTime(() => Sorted.SetVsArray.CreateSortedSet(randomNumbers));
+
+// Console.WriteLine();
+// Console.WriteLine("Sorted.SetVsArray.Search");
+// MeasuringUtilities.MeasureTime(() => Sorted.SetVsArray.SearchInArray(sortedArray));
+// MeasuringUtilities.MeasureTime(() => Sorted.SetVsArray.SearchInSet(sortedSet));
+
+// Console.WriteLine();
+// Console.WriteLine("Sorted.SetVsArray.Create:");
+// MeasuringUtilities.MeasureMemory(() => Sorted.SetVsArray.CreateSortedArray(randomNumbers));
+// MeasuringUtilities.MeasureMemory(() => Sorted.SetVsArray.CreateSortedSet(randomNumbers));

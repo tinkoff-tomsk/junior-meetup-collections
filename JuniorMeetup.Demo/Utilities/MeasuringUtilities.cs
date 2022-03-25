@@ -30,19 +30,18 @@ static class MeasuringUtilities
 
 	public static void MeasureMemory(Action action, [CallerArgumentExpression("action")] string? expression = null)
 	{
-		long workingSetBefore = GetWorkingSetInMegabytes();
-		Console.WriteLine($"{expression}. Memory consumption before: {workingSetBefore} MB");
-
+		long workingSetBefore = GetWorkingSetInBytes();
 		action();
+		long workingSetAfter = GetWorkingSetInBytes();
 
-		long workingSetAfter = GetWorkingSetInMegabytes();
-		Console.WriteLine($"{expression}. Memory consumption after:  {workingSetAfter} MB");
+		double setBefore = (workingSetAfter - workingSetBefore) / 1_000_000.0;
+		Console.WriteLine($"{expression,-75}{setBefore,10:N2} MB");
 
 		GC.Collect();
 	}
 
-	private static long GetWorkingSetInMegabytes()
+	private static long GetWorkingSetInBytes()
 	{
-		return Process.GetCurrentProcess().WorkingSet64 / 1_000_000;
+		return Process.GetCurrentProcess().WorkingSet64;
 	}
 }
