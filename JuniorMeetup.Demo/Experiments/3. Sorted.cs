@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace JuniorMeetup.Demo.Experiments;
 
+[SuppressMessage("ReSharper", "ReturnValueOfPureMethodIsNotUsed")]
 internal static class Sorted
 {
 	public static class Add

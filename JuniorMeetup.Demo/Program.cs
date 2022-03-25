@@ -77,3 +77,10 @@ var linkedList = MeasuringUtilities.MeasureTime(Lists.Append.ToLinkedList);
 // Console.WriteLine("Sorted.SetVsArray.Create:");
 // MeasuringUtilities.MeasureMemory(() => Sorted.SetVsArray.CreateSortedArray(randomNumbers));
 // MeasuringUtilities.MeasureMemory(() => Sorted.SetVsArray.CreateSortedSet(randomNumbers));
+
+// var result = Concurrent.ArrayList.Add();
+// var result = Concurrent.ArrayList.AddWithLock();
+// Console.WriteLine(result.Count);
+
+// MeasuringUtilities.MeasureTime(Concurrent.ArrayList.AddWithLock);
+// MeasuringUtilities.MeasureTime(Concurrent.Bag.Add);
