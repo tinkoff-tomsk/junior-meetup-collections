@@ -102,6 +102,8 @@ var linkedList = MeasuringUtilities.MeasureTime(Lists.Append.ToLinkedList);
 // 9. Concurrent creation
 
 // var result = Concurrent.ArrayList.Add();
+// Console.WriteLine();
+// Console.WriteLine($"{result.Count:N0} elements successfully added to the array list");
 
 // 10. Concurrent creation with locks
 
