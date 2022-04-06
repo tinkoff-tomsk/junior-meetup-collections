@@ -1,16 +1,20 @@
 using System.Diagnostics.CodeAnalysis;
+using BenchmarkDotNet.Attributes;
 using JuniorMeetup.Demo.Dummies;
 
 namespace JuniorMeetup.Demo.Experiments;
 
+[SuppressMessage("ReSharper", "ClassCanBeSealed.Global")]
 [SuppressMessage("ReSharper", "ReturnValueOfPureMethodIsNotUsed")]
-static class Sets
+public static class Sets
 {
-	public static class Add
+	[MemoryDiagnoser]
+	public class Add
 	{
 		private const int N = 5_000_000;
 
-		public static List<int> ToArrayList()
+		[Benchmark]
+		public List<int> ToArrayList()
 		{
 			List<int> arrayList = new();
 
@@ -22,7 +26,8 @@ static class Sets
 			return arrayList;
 		}
 
-		public static HashSet<int> ToHashSet()
+		[Benchmark]
+		public HashSet<int> ToHashSet()
 		{
 			HashSet<int> hashSet = new();
 
@@ -35,32 +40,48 @@ static class Sets
 		}
 	}
 
-	public static class Contains
+	[MemoryDiagnoser]
+	public class Contains
 	{
 		private const int N = 50_000;
 
-		public static void InArrayList(List<int> arrayList)
+		private readonly List<int> _arrayList;
+		private readonly HashSet<int> _hashSet;
+
+		public Contains()
+		{
+			Add add = new();
+
+			_arrayList = add.ToArrayList();
+			_hashSet = add.ToHashSet();
+		}
+
+		[Benchmark]
+		public void InArrayList()
 		{
 			for (int i = 0; i < N; i++)
 			{
-				arrayList.Contains(i);
+				_arrayList.Contains(i);
 			}
 		}
 
-		public static void InHashSet(HashSet<int> hashSet)
+		[Benchmark]
+		public void InHashSet()
 		{
 			for (int i = 0; i < N; i++)
 			{
-				hashSet.Contains(i);
+				_hashSet.Contains(i);
 			}
 		}
 	}
 
-	public static class Hashing
+	[MemoryDiagnoser]
+	public class AddWithDifferentHashing
 	{
 		private const int N = 10_000;
 
-		public static HashSet<PoorlyHashedObject> AddPoorlyHashedObjects()
+		[Benchmark]
+		public HashSet<PoorlyHashedObject> AddPoorlyHashedObjects()
 		{
 			HashSet<PoorlyHashedObject> hashSet = new();
 
@@ -73,7 +94,8 @@ static class Sets
 			return hashSet;
 		}
 
-		public static HashSet<ProperlyHashedObject> AddProperlyHashedObjects()
+		[Benchmark]
+		public HashSet<ProperlyHashedObject> AddProperlyHashedObjects()
 		{
 			HashSet<ProperlyHashedObject> hashSet = new();
 
@@ -85,22 +107,41 @@ static class Sets
 
 			return hashSet;
 		}
+	}
 
-		public static void SearchPoorlyHashedObjects(HashSet<PoorlyHashedObject> hashSet)
+	[MemoryDiagnoser]
+	public class ContainsWithDifferentHashing
+	{
+		private const int N = 10_000;
+
+		private readonly HashSet<PoorlyHashedObject> _poorlyHashedObjects;
+		private readonly HashSet<ProperlyHashedObject> _properlyHashedObjects;
+
+		public ContainsWithDifferentHashing()
+		{
+			AddWithDifferentHashing addWithDifferentHashing = new();
+
+			_poorlyHashedObjects   = addWithDifferentHashing.AddPoorlyHashedObjects();
+			_properlyHashedObjects = addWithDifferentHashing.AddProperlyHashedObjects();
+		}
+
+		[Benchmark]
+		public void SearchPoorlyHashedObjects()
 		{
 			for (int i = 0; i < N; i++)
 			{
 				PoorlyHashedObject poorlyHashedObject = new(i);
-				hashSet.Contains(poorlyHashedObject);
+				_poorlyHashedObjects.Contains(poorlyHashedObject);
 			}
 		}
 
-		public static void SearchProperlyHashedObjects(HashSet<ProperlyHashedObject> hashSet)
+		[Benchmark]
+		public void SearchProperlyHashedObjects()
 		{
 			for (int i = 0; i < N; i++)
 			{
 				ProperlyHashedObject properlyHashedObject = new(i);
-				hashSet.Contains(properlyHashedObject);
+				_properlyHashedObjects.Contains(properlyHashedObject);
 			}
 		}
 	}

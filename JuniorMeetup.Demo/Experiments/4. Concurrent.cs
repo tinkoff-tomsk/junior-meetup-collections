@@ -1,13 +1,17 @@
 using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
+using BenchmarkDotNet.Attributes;
 
 namespace JuniorMeetup.Demo.Experiments;
 
+[SuppressMessage("ReSharper", "ClassCanBeSealed.Global")]
 public static class Concurrent
 {
 	private const int TasksCount = 10;
 	private const int N = 1_000_000;
 
-	public static class ArrayList
+	[MemoryDiagnoser]
+	public class ArrayList
 	{
 		public static List<int> Add()
 		{
@@ -30,7 +34,8 @@ public static class Concurrent
 			return arrayList;
 		}
 
-		public static List<int> AddWithLock()
+		[Benchmark]
+		public List<int> AddWithLock()
 		{
 			List<int> arrayList = new();
 			var addTasks = new Task[TasksCount];
@@ -56,9 +61,11 @@ public static class Concurrent
 		}
 	}
 
-	public static class Bag
+	[MemoryDiagnoser]
+	public class Bag
 	{
-		public static ConcurrentBag<int> Add()
+		[Benchmark]
+		public ConcurrentBag<int> Add()
 		{
 			ConcurrentBag<int> concurrentBag = new();
 			var addTasks = new Task[TasksCount];

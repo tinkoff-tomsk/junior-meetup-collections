@@ -1,12 +1,18 @@
+using System.Diagnostics.CodeAnalysis;
+using BenchmarkDotNet.Attributes;
+
 namespace JuniorMeetup.Demo.Experiments;
 
-static class Lists
+[SuppressMessage("ReSharper", "ClassCanBeSealed.Global")]
+public static class Lists
 {
-	public static class Append
+	[MemoryDiagnoser]
+	public class Append
 	{
 		private const int N = 10_000_000;
 
-		public static List<int> ToArrayList()
+		[Benchmark]
+		public List<int> ToArrayList()
 		{
 			List<int> arrayList = new();
 
@@ -18,7 +24,8 @@ static class Lists
 			return arrayList;
 		}
 
-		public static LinkedList<int> ToLinkedList()
+		[Benchmark]
+		public LinkedList<int> ToLinkedList()
 		{
 			LinkedList<int> linkedList = new();
 
@@ -31,30 +38,46 @@ static class Lists
 		}
 	}
 
-	public static class RemoveLast
+	[MemoryDiagnoser]
+	public class RemoveLast
 	{
-		public static void FromArrayList(List<int> arrayList)
+		private readonly List<int> _arrayList;
+		private readonly LinkedList<int> _linkedList;
+
+		public RemoveLast()
 		{
-			while (arrayList.Any())
+			Append append = new();
+
+			_arrayList = append.ToArrayList();
+			_linkedList = append.ToLinkedList();
+		}
+
+		[Benchmark]
+		public void FromArrayList()
+		{
+			while (_arrayList.Any())
 			{
-				arrayList.RemoveAt(arrayList.Count - 1);
+				_arrayList.RemoveAt(_arrayList.Count - 1);
 			}
 		}
 
-		public static void FromLinkedList(LinkedList<int> linkedList)
+		[Benchmark]
+		public void FromLinkedList()
 		{
-			while (linkedList.Any())
+			while (_linkedList.Any())
 			{
-				linkedList.RemoveLast();
+				_linkedList.RemoveLast();
 			}
 		}
 	}
 
-	public static class InsertFirst
+	[MemoryDiagnoser]
+	public class InsertFirst
 	{
 		const int N = 200_000;
 
-		public static List<int> ToArrayList()
+		[Benchmark]
+		public List<int> ToArrayList()
 		{
 			List<int> arrayList = new();
 
@@ -66,7 +89,8 @@ static class Lists
 			return arrayList;
 		}
 
-		public static LinkedList<int> ToLinkedList()
+		[Benchmark]
+		public LinkedList<int> ToLinkedList()
 		{
 			LinkedList<int> linkedList = new();
 
@@ -79,21 +103,35 @@ static class Lists
 		}
 	}
 
-	public static class RemoveFirst
+	[MemoryDiagnoser]
+	public class RemoveFirst
 	{
-		public static void FromArrayList(List<int> arrayList)
+		private readonly List<int> _arrayList;
+		private readonly LinkedList<int> _linkedList;
+
+		public RemoveFirst()
 		{
-			while (arrayList.Any())
+			InsertFirst insertFirst = new();
+
+			_arrayList = insertFirst.ToArrayList();
+			_linkedList = insertFirst.ToLinkedList();
+		}
+
+		[Benchmark]
+		public void FromArrayList()
+		{
+			while (_arrayList.Any())
 			{
-				arrayList.RemoveAt(0);
+				_arrayList.RemoveAt(0);
 			}
 		}
 
-		public static void FromLinkedList(LinkedList<int> linkedList)
+		[Benchmark]
+		public void FromLinkedList()
 		{
-			while (linkedList.Any())
+			while (_linkedList.Any())
 			{
-				linkedList.RemoveFirst();
+				_linkedList.RemoveFirst();
 			}
 		}
 	}

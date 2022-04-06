@@ -1,15 +1,19 @@
 using System.Diagnostics.CodeAnalysis;
+using BenchmarkDotNet.Attributes;
 
 namespace JuniorMeetup.Demo.Experiments;
 
+[SuppressMessage("ReSharper", "ClassCanBeSealed.Global")]
 [SuppressMessage("ReSharper", "ReturnValueOfPureMethodIsNotUsed")]
-internal static class Sorted
+public static class Sorted
 {
-	public static class Add
+	[MemoryDiagnoser]
+	public class Add
 	{
 		private const int N = 5_000_000;
 
-		public static HashSet<int> ToHashSet()
+		[Benchmark]
+		public HashSet<int> ToHashSet()
 		{
 			HashSet<int> hashSet = new();
 
@@ -21,7 +25,8 @@ internal static class Sorted
 			return hashSet;
 		}
 
-		public static SortedSet<int> ToSortedSet()
+		[Benchmark]
+		public SortedSet<int> ToSortedSet()
 		{
 			SortedSet<int> sortedSet = new();
 
@@ -34,32 +39,90 @@ internal static class Sorted
 		}
 	}
 
-	public static class Contains
+	[MemoryDiagnoser]
+	public class Contains
 	{
 		private const int N = 5_000_000;
 
-		public static void InHashSet(HashSet<int> hashSet)
+		private readonly HashSet<int> _hashSet;
+		private readonly SortedSet<int> _sortedSet;
+
+		public Contains()
+		{
+			Add add = new();
+
+			_hashSet = add.ToHashSet();
+			_sortedSet = add.ToSortedSet();
+		}
+
+		[Benchmark]
+		public void InHashSet()
 		{
 			for (int i = 0; i < N; i++)
 			{
-				hashSet.Contains(i);
+				_hashSet.Contains(i);
 			}
 		}
 
-		public static void InSortedSet(SortedSet<int> sortedSet)
+		[Benchmark]
+		public void InSortedSet()
 		{
 			for (int i = 0; i < N; i++)
 			{
-				sortedSet.Contains(i);
+				_sortedSet.Contains(i);
 			}
 		}
 	}
 
-	public static class SetVsArray
+	[MemoryDiagnoser]
+	public class SetVsArray
 	{
 		private const int N = 1_000_000;
 
-		public static int[] GetRandomNumbers()
+		private readonly int[] _randomNumbers = GetRandomNumbers();
+
+		private readonly int[] _sortedArray;
+		private readonly SortedSet<int> _sortedSet;
+
+		public SetVsArray()
+		{
+			_sortedArray = CreateSortedArray();
+			_sortedSet = CreateSortedSet();
+		}
+
+		[Benchmark]
+		public int[] CreateSortedArray()
+		{
+			var array = new int[N];
+
+			Array.Copy(_randomNumbers, array, N);
+			Array.Sort(array);
+
+			return array;
+		}
+
+		[Benchmark]
+		public SortedSet<int> CreateSortedSet() => new(_randomNumbers);
+
+		[Benchmark]
+		public void SearchInArray()
+		{
+			for (int i = N; i >= 0; i--)
+			{
+				Array.BinarySearch(_sortedArray, i);
+			}
+		}
+
+		[Benchmark]
+		public void SearchInSet()
+		{
+			for (int i = N; i >= 0; i--)
+			{
+				_sortedSet.Contains(i);
+			}
+		}
+
+		private static int[] GetRandomNumbers()
 		{
 			Random random = new();
 
@@ -67,34 +130,6 @@ internal static class Sorted
 				.Range(0, N)
 				.OrderBy(_ => random.Next())
 				.ToArray();
-		}
-
-		public static int[] CreateSortedArray(int[] randomNumbers)
-		{
-			var array = new int[N];
-
-			Array.Copy(randomNumbers, array, N);
-			Array.Sort(array);
-
-			return array;
-		}
-
-		public static SortedSet<int> CreateSortedSet(int[] randomNumbers) => new(randomNumbers);
-
-		public static void SearchInArray(int[] sortedArray)
-		{
-			for (int i = N; i >= 0; i--)
-			{
-				Array.BinarySearch(sortedArray, i);
-			}
-		}
-
-		public static void SearchInSet(SortedSet<int> sortedSet)
-		{
-			for (int i = N; i >= 0; i--)
-			{
-				sortedSet.Contains(i);
-			}
 		}
 	}
 }
