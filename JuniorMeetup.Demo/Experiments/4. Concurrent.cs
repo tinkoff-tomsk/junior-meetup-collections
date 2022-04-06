@@ -13,7 +13,7 @@ public static class Concurrent
 	[MemoryDiagnoser]
 	public class ArrayList
 	{
-		public static List<int> Add()
+		public List<int> Add()
 		{
 			List<int> arrayList = new();
 			var addTasks = new Task[TasksCount];

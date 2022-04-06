@@ -22,6 +22,7 @@ BenchmarkRunner.Run<Concurrent.Bag>();
 
 // Код ниже может выдать исключение. Это нормально.
 
-// var result = Concurrent.ArrayList.Add();
+// Concurrent.ArrayList experiment = new();
+// var result = experiment.Add();
 // Console.WriteLine();
 // Console.WriteLine($"{result.Count:N0} elements successfully added to the array list");
